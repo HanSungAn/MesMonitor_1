@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="MesMonitor.Views.HistoryAlarmView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1100">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Top Controls & Filter -->
+            <RowDefinition Height="*"/>    <!-- DataGrid & Master Config -->
+            <RowDefinition Height="Auto"/> <!-- Status Bar -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. Top Controls & Filter -->
+        <Border Grid.Row="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="이상 심각도(Severity) 필터:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox SelectedValue="{Binding SeverityFilter}" SelectedValuePath="Content" Width="130" Height="30"
+                              Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B">
+                        <ComboBoxItem Content="전체" IsSelected="True"/>
+                        <ComboBoxItem Content="Critical"/>
+                        <ComboBoxItem Content="Warning"/>
+                        <ComboBoxItem Content="Info"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="이력 CSV 내보내기" Command="{Binding ExportCsvCommand}"
+                            Background="#047857" Foreground="#FFFFFF" FontWeight="Bold" Padding="14,6" Height="32" BorderThickness="0">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- 2. Alarm DataGrid & Master Info -->
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Alarm Log Grid -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="설비 경보 및 이벤트 히스토리 (Event Logs)" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" Margin="0,0,0,12"/>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding FilteredAlarms}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="발생 시각" Binding="{Binding Timestamp, StringFormat='{}yyyy-MM-dd HH:mm:ss'}" Width="150"/>
+                            <DataGridTextColumn Header="설비명" Binding="{Binding EquipmentName}" Width="160"/>
+                            
+                            <DataGridTemplateColumn Header="심각도" Width="85">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding Severity, Converter={StaticResource AlarmSeverityToBrushConverter}}"
+                                                CornerRadius="3" Padding="6,2" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Severity}" Foreground="#FFFFFF" FontWeight="Bold" FontSize="10"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="알람 상세 내용" Binding="{Binding Message}" Width="*"/>
+
+                            <DataGridTemplateColumn Header="상태" Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding IsAcknowledged, Converter={x:Null}}" FontSize="11" HorizontalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="미확인"/>
+                                                    <Setter Property="Foreground" Value="#EF4444"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAcknowledged}" Value="True">
+                                                            <Setter Property="Text" Value="확인됨"/>
+                                                            <Setter Property="Foreground" Value="#10B981"/>
+                                                            <Setter Property="FontWeight" Value="Normal"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="조치" Width="75">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="확인" 
+                                                Command="{Binding DataContext.AcknowledgeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding IsAcknowledged, Converter={x:Null}}"
+                                                Background="#334155" Foreground="#F8FAFC" FontSize="10" Padding="6,2" Height="22" BorderThickness="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Master Data & Connection Configuration Info -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="기준 정보 및 인터페이스 설정" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" Margin="0,0,0,12"/>
+
+                        <!-- PLC & Network Connection Table -->
+                        <Border Background="#161F38" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="통신 프로토콜 연동 현황 (PLC / Edge)" FontWeight="SemiBold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="Line 01 SMT" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="OPC-UA (192.168.1.101:4840)" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="Line 02 CNC" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="FANUC FOCAS (Port 8193)" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="Line 03 사출" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="Euromap 63 / Modbus TCP" HorizontalAlignment="Right" FontSize="11" Foreground="#FBBF24"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="Line 04 조립" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="Mitsubishi MC Protocol" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- System Parameters -->
+                        <Border Background="#161F38" CornerRadius="6" Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="시스템 파라미터" FontWeight="SemiBold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="센서 샘플링 주기" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="1,500 ms" HorizontalAlignment="Right" FontSize="11"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="OEE 목표 기준치" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="85.0 %" HorizontalAlignment="Right" FontSize="11"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="불량 경보 임계치" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="2.5 %" HorizontalAlignment="Right" FontSize="11"/>
+                                </DockPanel>
+                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <DockPanel Margin="0,3">
+                                    <TextBlock Text="로그 보관 기간" Foreground="#94A3B8" FontSize="11"/>
+                                    <TextBlock Text="90 일" HorizontalAlignment="Right" FontSize="11"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- 3. Bottom Status Bar -->
+        <Border Grid.Row="2" Background="#111B33" CornerRadius="4" Padding="12,6">
+            <DockPanel>
+                <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="#94A3B8"/>
+                <TextBlock Text="MES 데이터베이스: 정상 연결 (Local Sim)" HorizontalAlignment="Right" FontSize="11" Foreground="#10B981"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
+
