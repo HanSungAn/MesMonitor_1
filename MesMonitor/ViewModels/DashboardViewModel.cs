@@ -4,6 +4,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.VisualElements;
+using MesMonitor.Helpers;
 using MesMonitor.Models;
 using MesMonitor.Services;
 using SkiaSharp;
@@ -13,6 +14,7 @@ namespace MesMonitor.ViewModels;
 public class DashboardViewModel : ViewModelBase
 {
     private readonly IMesDataSimulator _simulator;
+    private readonly IThemeService _themeService;
 
     private int _totalPlanQty;
     public int TotalPlanQty
@@ -60,17 +62,79 @@ public class DashboardViewModel : ViewModelBase
     public ObservableCollection<AlarmItem> RecentAlarms => _simulator.Alarms;
 
     // Charts
-    public ISeries[] OeeSeries { get; private set; }
-    public ISeries[] HourlyProductionSeries { get; private set; }
-    public Axis[] HourlyXAxes { get; private set; }
-    public Axis[] HourlyYAxes { get; private set; }
+    private ISeries[] _oeeSeries = Array.Empty<ISeries>();
+    public ISeries[] OeeSeries
+    {
+        get => _oeeSeries;
+        private set => SetProperty(ref _oeeSeries, value);
+    }
 
-    public DashboardViewModel(IMesDataSimulator simulator)
+    private ISeries[] _hourlyProductionSeries = Array.Empty<ISeries>();
+    public ISeries[] HourlyProductionSeries
+    {
+        get => _hourlyProductionSeries;
+        private set => SetProperty(ref _hourlyProductionSeries, value);
+    }
+
+    private Axis[] _hourlyXAxes = Array.Empty<Axis>();
+    public Axis[] HourlyXAxes
+    {
+        get => _hourlyXAxes;
+        private set => SetProperty(ref _hourlyXAxes, value);
+    }
+
+    private Axis[] _hourlyYAxes = Array.Empty<Axis>();
+    public Axis[] HourlyYAxes
+    {
+        get => _hourlyYAxes;
+        private set => SetProperty(ref _hourlyYAxes, value);
+    }
+
+    private SolidColorPaint _chartLegendTextPaint;
+    public SolidColorPaint ChartLegendTextPaint
+    {
+        get => _chartLegendTextPaint;
+        private set => SetProperty(ref _chartLegendTextPaint, value);
+    }
+
+    private SolidColorPaint _chartTooltipBgPaint;
+    public SolidColorPaint ChartTooltipBgPaint
+    {
+        get => _chartTooltipBgPaint;
+        private set => SetProperty(ref _chartTooltipBgPaint, value);
+    }
+
+    private SolidColorPaint _chartTooltipTextPaint;
+    public SolidColorPaint ChartTooltipTextPaint
+    {
+        get => _chartTooltipTextPaint;
+        private set => SetProperty(ref _chartTooltipTextPaint, value);
+    }
+
+    public DashboardViewModel(IMesDataSimulator simulator, IThemeService themeService)
     {
         Title = "종합 생산 관제 대시보드 (Dashboard & Andon)";
         _simulator = simulator;
+        _themeService = themeService;
 
-        // Initialize Charts
+        _chartLegendTextPaint = ChartThemeHelper.GetLegendTextPaint(_themeService.CurrentTheme);
+        _chartTooltipBgPaint = ChartThemeHelper.GetTooltipBgPaint(_themeService.CurrentTheme);
+        _chartTooltipTextPaint = ChartThemeHelper.GetTooltipTextPaint(_themeService.CurrentTheme);
+
+        InitializeCharts(_themeService.CurrentTheme);
+
+        _themeService.ThemeChanged += OnThemeChanged;
+
+        UpdateKpiMetrics();
+        _simulator.DataUpdated += OnSimulatorDataUpdated;
+    }
+
+    private void InitializeCharts(AppTheme theme)
+    {
+        ChartLegendTextPaint = ChartThemeHelper.GetLegendTextPaint(theme);
+        ChartTooltipBgPaint = ChartThemeHelper.GetTooltipBgPaint(theme);
+        ChartTooltipTextPaint = ChartThemeHelper.GetTooltipTextPaint(theme);
+
         OeeSeries = new ISeries[]
         {
             new PieSeries<double>
@@ -102,7 +166,7 @@ public class DashboardViewModel : ViewModelBase
             {
                 Name = "계획 목표",
                 Values = new int[] { 350, 350, 380, 380, 400, 400, 420, 420 },
-                Fill = new SolidColorPaint(new SKColor(71, 85, 105, 180)),
+                Fill = ChartThemeHelper.GetTargetBarPaint(theme),
                 MaxBarWidth = 24
             },
             new ColumnSeries<int>
@@ -119,7 +183,7 @@ public class DashboardViewModel : ViewModelBase
             new Axis
             {
                 Labels = new string[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00" },
-                LabelsPaint = new SolidColorPaint(new SKColor(148, 163, 184)),
+                LabelsPaint = ChartThemeHelper.GetLabelsPaint(theme),
                 TextSize = 12
             }
         };
@@ -128,13 +192,15 @@ public class DashboardViewModel : ViewModelBase
         {
             new Axis
             {
-                LabelsPaint = new SolidColorPaint(new SKColor(148, 163, 184)),
-                SeparatorsPaint = new SolidColorPaint(new SKColor(51, 65, 85, 100))
+                LabelsPaint = ChartThemeHelper.GetLabelsPaint(theme),
+                SeparatorsPaint = ChartThemeHelper.GetSeparatorsPaint(theme)
             }
         };
+    }
 
-        UpdateKpiMetrics();
-        _simulator.DataUpdated += OnSimulatorDataUpdated;
+    private void OnThemeChanged(AppTheme theme)
+    {
+        InitializeCharts(theme);
     }
 
     private void OnSimulatorDataUpdated()
@@ -158,4 +224,3 @@ public class DashboardViewModel : ViewModelBase
         ActiveAlarmCount = _simulator.Alarms.Count(a => !a.IsAcknowledged);
     }
 }
-

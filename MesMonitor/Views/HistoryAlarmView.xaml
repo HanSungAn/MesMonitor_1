@@ -13,12 +13,11 @@
         </Grid.RowDefinitions>
 
         <!-- 1. Top Controls & Filter -->
-        <Border Grid.Row="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16">
+        <Border Grid.Row="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,0,16">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="이상 심각도(Severity) 필터:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <ComboBox SelectedValue="{Binding SeverityFilter}" SelectedValuePath="Content" Width="130" Height="30"
-                              Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B">
+                    <ComboBox SelectedValue="{Binding SeverityFilter}" SelectedValuePath="Content" Width="130" Height="30">
                         <ComboBoxItem Content="전체" IsSelected="True"/>
                         <ComboBoxItem Content="Critical"/>
                         <ComboBoxItem Content="Warning"/>
@@ -47,14 +46,14 @@
             </Grid.ColumnDefinitions>
 
             <!-- Alarm Log Grid -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="설비 경보 및 이벤트 히스토리 (Event Logs)" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" Margin="0,0,0,12"/>
+                    <TextBlock Text="설비 경보 및 이벤트 히스토리 (Event Logs)" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
                     <DataGrid Grid.Row="1" ItemsSource="{Binding FilteredAlarms}">
                         <DataGrid.Columns>
@@ -81,12 +80,12 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Text" Value="미확인"/>
-                                                    <Setter Property="Foreground" Value="#EF4444"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
                                                     <Setter Property="FontWeight" Value="Bold"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsAcknowledged}" Value="True">
                                                             <Setter Property="Text" Value="확인됨"/>
-                                                            <Setter Property="Foreground" Value="#10B981"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
                                                             <Setter Property="FontWeight" Value="Normal"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -104,7 +103,7 @@
                                                 Command="{Binding DataContext.AcknowledgeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"
                                                 IsEnabled="{Binding IsAcknowledged, Converter={x:Null}}"
-                                                Background="#334155" Foreground="#F8FAFC" FontSize="10" Padding="6,2" Height="22" BorderThickness="0"/>
+                                                Background="{DynamicResource NavButtonHoverBrush}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="10" Padding="6,2" Height="22" BorderThickness="0"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -114,59 +113,59 @@
             </Border>
 
             <!-- Master Data & Connection Configuration Info -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="기준 정보 및 인터페이스 설정" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" Margin="0,0,0,12"/>
+                        <TextBlock Text="기준 정보 및 인터페이스 설정" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
                         <!-- PLC & Network Connection Table -->
-                        <Border Background="#161F38" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                        <Border Background="{DynamicResource SubCardBgBrush}" BorderBrush="{DynamicResource SubCardBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                             <StackPanel>
-                                <TextBlock Text="통신 프로토콜 연동 현황 (PLC / Edge)" FontWeight="SemiBold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <TextBlock Text="통신 프로토콜 연동 현황 (PLC / Edge)" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource AccentCyanBrush}" Margin="0,0,0,8"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="Line 01 SMT" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="OPC-UA (192.168.1.101:4840)" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                    <TextBlock Text="Line 01 SMT" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="OPC-UA (192.168.1.101:4840)" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource SuccessBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="Line 02 CNC" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="FANUC FOCAS (Port 8193)" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                    <TextBlock Text="Line 02 CNC" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="FANUC FOCAS (Port 8193)" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource SuccessBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="Line 03 사출" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="Euromap 63 / Modbus TCP" HorizontalAlignment="Right" FontSize="11" Foreground="#FBBF24"/>
+                                    <TextBlock Text="Line 03 사출" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="Euromap 63 / Modbus TCP" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource WarningBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="Line 04 조립" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="Mitsubishi MC Protocol" HorizontalAlignment="Right" FontSize="11" Foreground="#34D399"/>
+                                    <TextBlock Text="Line 04 조립" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="Mitsubishi MC Protocol" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource SuccessBrush}"/>
                                 </DockPanel>
                             </StackPanel>
                         </Border>
 
                         <!-- System Parameters -->
-                        <Border Background="#161F38" CornerRadius="6" Padding="12">
+                        <Border Background="{DynamicResource SubCardBgBrush}" BorderBrush="{DynamicResource SubCardBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12">
                             <StackPanel>
-                                <TextBlock Text="시스템 파라미터" FontWeight="SemiBold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <TextBlock Text="시스템 파라미터" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource AccentCyanBrush}" Margin="0,0,0,8"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="센서 샘플링 주기" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="1,500 ms" HorizontalAlignment="Right" FontSize="11"/>
+                                    <TextBlock Text="센서 샘플링 주기" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="1,500 ms" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="OEE 목표 기준치" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="85.0 %" HorizontalAlignment="Right" FontSize="11"/>
+                                    <TextBlock Text="OEE 목표 기준치" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="85.0 %" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="불량 경보 임계치" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="2.5 %" HorizontalAlignment="Right" FontSize="11"/>
+                                    <TextBlock Text="불량 경보 임계치" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="2.5 %" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </DockPanel>
-                                <Separator Background="#2D3B5A" Margin="0,3"/>
+                                <Separator Background="{DynamicResource SeparatorBrush}" Margin="0,3"/>
                                 <DockPanel Margin="0,3">
-                                    <TextBlock Text="로그 보관 기간" Foreground="#94A3B8" FontSize="11"/>
-                                    <TextBlock Text="90 일" HorizontalAlignment="Right" FontSize="11"/>
+                                    <TextBlock Text="로그 보관 기간" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    <TextBlock Text="90 일" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </DockPanel>
                             </StackPanel>
                         </Border>
@@ -176,12 +175,11 @@
         </Grid>
 
         <!-- 3. Bottom Status Bar -->
-        <Border Grid.Row="2" Background="#111B33" CornerRadius="4" Padding="12,6">
+        <Border Grid.Row="2" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="12,6">
             <DockPanel>
-                <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="#94A3B8"/>
-                <TextBlock Text="MES 데이터베이스: 정상 연결 (Local Sim)" HorizontalAlignment="Right" FontSize="11" Foreground="#10B981"/>
+                <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"/>
+                <TextBlock Text="MES 데이터베이스: 정상 연결 (Local Sim)" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource SuccessBrush}"/>
             </DockPanel>
         </Border>
     </Grid>
 </UserControl>
-

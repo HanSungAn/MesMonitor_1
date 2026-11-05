@@ -21,31 +21,31 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="전체 지시 건수" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding TotalCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#FFFFFF"/>
+                    <TextBlock Text="전체 지시 건수" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding TotalCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="현재 진행 중" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding InProgressCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#38BDF8"/>
+                    <TextBlock Text="현재 진행 중" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding InProgressCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource AccentCyanBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="2" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="대기 / 배정 전" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding WaitingCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#94A3B8"/>
+                    <TextBlock Text="대기 / 배정 전" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding WaitingCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource TextMutedBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="3" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="생산 완료 건" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding CompletedCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{StaticResource SuccessBrush}"/>
+                    <TextBlock Text="생산 완료 건" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding CompletedCount, StringFormat='{}{0} 건'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource SuccessBrush}"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -58,7 +58,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Work Order List -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -67,12 +67,11 @@
 
                     <!-- Filter Bar -->
                     <DockPanel Margin="0,0,0,12">
-                        <TextBlock Text="작업지시 (Work Orders) 현황" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" VerticalAlignment="Center"/>
+                        <TextBlock Text="작업지시 (Work Orders) 현황" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock Text="상태 필터:" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="11"/>
-                            <ComboBox SelectedValue="{Binding SelectedFilter}" SelectedValuePath="Content" Width="100" Height="28"
-                                      Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B">
+                            <TextBlock Text="상태 필터:" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="11"/>
+                            <ComboBox SelectedValue="{Binding SelectedFilter}" SelectedValuePath="Content" Width="100" Height="28">
                                 <ComboBoxItem Content="전체" IsSelected="True"/>
                                 <ComboBoxItem Content="진행중"/>
                                 <ComboBoxItem Content="대기"/>
@@ -106,7 +105,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Margin="4,0">
-                                            <ProgressBar Value="{Binding ProgressRate, Mode=OneWay}" Maximum="100" Height="10" Background="#24344D" Foreground="#38BDF8"/>
+                                            <ProgressBar Value="{Binding ProgressRate, Mode=OneWay}" Maximum="100" Height="10" Background="{DynamicResource ProgressBarBgBrush}" Foreground="{DynamicResource AccentCyanBrush}"/>
                                             <TextBlock Text="{Binding ProgressRate, StringFormat='{}{0:F0}%'}" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontWeight="Bold"/>
                                         </Grid>
                                     </DataTemplate>
@@ -129,7 +128,7 @@
             </Border>
 
             <!-- Quick Work Order Creation Panel & Donut Chart -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -137,30 +136,26 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="신규 작업지시 발행 (Create WO)" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9" Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="0" Text="신규 작업지시 발행 (Create WO)" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
                     <!-- Form Inputs -->
                     <StackPanel Grid.Row="1">
-                        <TextBlock Text="배정 라인" Foreground="#94A3B8" FontSize="11" Margin="0,0,0,4"/>
-                        <ComboBox SelectedValue="{Binding NewLineId}" SelectedValuePath="Content" Height="30" Margin="0,0,0,10"
-                                  Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B">
+                        <TextBlock Text="배정 라인" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" Margin="0,0,0,4"/>
+                        <ComboBox SelectedValue="{Binding NewLineId}" SelectedValuePath="Content" Height="30" Margin="0,0,0,10">
                             <ComboBoxItem Content="L01" IsSelected="True"/>
                             <ComboBoxItem Content="L02"/>
                             <ComboBoxItem Content="L03"/>
                             <ComboBoxItem Content="L04"/>
                         </ComboBox>
 
-                        <TextBlock Text="품목 코드" Foreground="#94A3B8" FontSize="11" Margin="0,0,0,4"/>
-                        <TextBox Text="{Binding NewProductCode}" Height="30" Margin="0,0,0,10" Padding="6,4"
-                                 Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B"/>
+                        <TextBlock Text="품목 코드" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding NewProductCode}" Height="30" Margin="0,0,0,10" Padding="6,4"/>
 
-                        <TextBlock Text="품목명" Foreground="#94A3B8" FontSize="11" Margin="0,0,0,4"/>
-                        <TextBox Text="{Binding NewProductName}" Height="30" Margin="0,0,0,10" Padding="6,4"
-                                 Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B"/>
+                        <TextBlock Text="품목명" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding NewProductName}" Height="30" Margin="0,0,0,10" Padding="6,4"/>
 
-                        <TextBlock Text="계획 수량 (EA)" Foreground="#94A3B8" FontSize="11" Margin="0,0,0,4"/>
-                        <TextBox Text="{Binding NewPlanQty}" Height="30" Margin="0,0,0,14" Padding="6,4"
-                                 Background="#111B33" Foreground="#FFFFFF" BorderBrush="#3A506B"/>
+                        <TextBlock Text="계획 수량 (EA)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding NewPlanQty}" Height="30" Margin="0,0,0,14" Padding="6,4"/>
 
                         <Button Content="작업지시 생성 &amp; 라인 배정" Command="{Binding AddOrderCommand}"
                                 Height="36" Background="#0284C7" Foreground="#FFFFFF" FontWeight="Bold" BorderThickness="0">
@@ -178,12 +173,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="오더 상태 점유 분포" FontWeight="SemiBold" FontSize="12" Foreground="#94A3B8"/>
-                        <lvc:PieChart Grid.Row="1" Series="{Binding StatusSeries}" LegendPosition="Bottom"/>
+                        <TextBlock Text="오더 상태 점유 분포" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"/>
+                        <lvc:PieChart Grid.Row="1" Series="{Binding StatusSeries}" LegendPosition="Bottom" Background="{DynamicResource CardBgBrush}"/>
                     </Grid>
                 </Grid>
             </Border>
         </Grid>
     </Grid>
 </UserControl>
-

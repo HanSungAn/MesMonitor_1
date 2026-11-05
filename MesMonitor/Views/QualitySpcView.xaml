@@ -22,38 +22,38 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="총 검사 수량 (Inspection)" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding TotalInspected, StringFormat='{}{0:N0} EA'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#38BDF8"/>
-                    <TextBlock Text="전수 자동 비전 검사 완료" Foreground="#64748B" FontSize="10" Margin="0,2,0,0"/>
+                    <TextBlock Text="총 검사 수량 (Inspection)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding TotalInspected, StringFormat='{}{0:N0} EA'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource AccentCyanBrush}"/>
+                    <TextBlock Text="전수 자동 비전 검사 완료" Foreground="{DynamicResource TextDimBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="불량률 및 PPM" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="불량률 및 PPM" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                        <TextBlock Text="{Binding DefectRatePercent, StringFormat='{}{0:F2}%'}" FontSize="22" FontWeight="Bold" Foreground="#EF4444"/>
-                        <TextBlock Text="{Binding Ppm, StringFormat='{} ({0:N0} PPM)'}" FontSize="14" FontWeight="SemiBold" Foreground="#F87171" VerticalAlignment="Bottom" Margin="6,0,0,3"/>
+                        <TextBlock Text="{Binding DefectRatePercent, StringFormat='{}{0:F2}%'}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource DangerBrush}"/>
+                        <TextBlock Text="{Binding Ppm, StringFormat='{} ({0:N0} PPM)'}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource DangerBrush}" VerticalAlignment="Bottom" Margin="6,0,0,3"/>
                     </StackPanel>
-                    <TextBlock Text="품질 목표 허용선 이내" Foreground="#10B981" FontSize="10" Margin="0,2,0,0"/>
+                    <TextBlock Text="품질 목표 허용선 이내" Foreground="{DynamicResource SuccessBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="2" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="공정능력지수 (Cpk)" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding CpkValue, StringFormat='{}{0:F2}'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#10B981"/>
-                    <TextBlock Text="우수 공정 (Cpk &gt; 1.33)" Foreground="#10B981" FontSize="10" Margin="0,2,0,0"/>
+                    <TextBlock Text="공정능력지수 (Cpk)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding CpkValue, StringFormat='{}{0:F2}'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource SuccessBrush}"/>
+                    <TextBlock Text="우수 공정 (Cpk &gt; 1.33)" Foreground="{DynamicResource SuccessBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="3" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="기본 잠재능력 (Cp)" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
-                    <TextBlock Text="{Binding CpValue, StringFormat='{}{0:F2}'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="#34D399"/>
-                    <TextBlock Text="공정 산포 안정 상태" Foreground="#64748B" FontSize="10" Margin="0,2,0,0"/>
+                    <TextBlock Text="기본 잠재능력 (Cp)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="{Binding CpValue, StringFormat='{}{0:F2}'}" FontSize="22" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource SuccessBrush}"/>
+                    <TextBlock Text="공정 산포 안정 상태" Foreground="{DynamicResource TextDimBrush}" FontSize="10" Margin="0,2,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -66,28 +66,37 @@
             </Grid.ColumnDefinitions>
 
             <!-- Pareto Chart -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <DockPanel>
-                        <TextBlock Text="불량 유형별 파레토 분석 (Pareto Chart - 80/20 Rule)" FontWeight="Bold" FontSize="13" Foreground="#F1F5F9"/>
-                        <TextBlock Text="막대: 건수 | 꺾은선: 누적 비율" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
+                        <TextBlock Text="불량 유형별 파레토 분석 (Pareto Chart - 80/20 Rule)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="막대: 건수 | 꺾은선: 누적 비율" HorizontalAlignment="Right" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
                     </DockPanel>
-                    <lvc:CartesianChart Grid.Row="1" Series="{Binding ParetoSeries}" XAxes="{Binding ParetoXAxes}" YAxes="{Binding ParetoYAxes}" LegendPosition="Top" Margin="0,8,0,0"/>
+                    <lvc:CartesianChart Grid.Row="1" 
+                                        Series="{Binding ParetoSeries}" 
+                                        XAxes="{Binding ParetoXAxes}" 
+                                        YAxes="{Binding ParetoYAxes}" 
+                                        LegendPosition="Top" 
+                                        LegendTextPaint="{Binding ChartLegendTextPaint}"
+                                        TooltipBackgroundPaint="{Binding ChartTooltipBgPaint}"
+                                        TooltipTextPaint="{Binding ChartTooltipTextPaint}"
+                                        Background="{DynamicResource CardBgBrush}"
+                                        Margin="0,8,0,0"/>
                 </Grid>
             </Border>
 
             <!-- Defect Stats DataGrid -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="불량 유형 상세 현황" FontWeight="Bold" FontSize="13" Foreground="#F1F5F9" Margin="0,0,0,8"/>
+                    <TextBlock Text="불량 유형 상세 현황" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
                     <DataGrid Grid.Row="1" ItemsSource="{Binding DefectStats}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="불량 유형" Binding="{Binding DefectType}" Width="*"/>
@@ -101,7 +110,7 @@
         </Grid>
 
         <!-- 3. SPC Control Chart (Xbar) -->
-        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}">
+        <Border Grid.Row="2" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -109,16 +118,24 @@
                 </Grid.RowDefinitions>
                 <DockPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Xbar 관리도 (Statistical Process Control Chart)" FontWeight="Bold" FontSize="13" Foreground="#F1F5F9"/>
+                        <TextBlock Text="Xbar 관리도 (Statistical Process Control Chart)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}"/>
                         <Border Background="#1E3A8A" CornerRadius="4" Padding="6,2" Margin="10,0,0,0">
                             <TextBlock Text="규격: 25.0 ± 0.45 mm" Foreground="#93C5FD" FontSize="10" FontWeight="SemiBold"/>
                         </Border>
                     </StackPanel>
-                    <TextBlock Text="붉은 점선: UCL(상한) / LCL(하한) | 초록 점선: CL(중심)" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
+                    <TextBlock Text="붉은 점선: UCL(상한) / LCL(하한) | 초록 점선: CL(중심)" HorizontalAlignment="Right" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
                 </DockPanel>
-                <lvc:CartesianChart Grid.Row="1" Series="{Binding SpcSeries}" XAxes="{Binding SpcXAxes}" YAxes="{Binding SpcYAxes}" LegendPosition="Top" Margin="0,8,0,0"/>
+                <lvc:CartesianChart Grid.Row="1" 
+                                    Series="{Binding SpcSeries}" 
+                                    XAxes="{Binding SpcXAxes}" 
+                                    YAxes="{Binding SpcYAxes}" 
+                                    LegendPosition="Top" 
+                                    LegendTextPaint="{Binding ChartLegendTextPaint}"
+                                    TooltipBackgroundPaint="{Binding ChartTooltipBgPaint}"
+                                    TooltipTextPaint="{Binding ChartTooltipTextPaint}"
+                                    Background="{DynamicResource CardBgBrush}"
+                                    Margin="0,8,0,0"/>
             </Grid>
         </Border>
     </Grid>
 </UserControl>
-

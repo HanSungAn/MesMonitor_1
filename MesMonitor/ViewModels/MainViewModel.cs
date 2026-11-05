@@ -8,6 +8,7 @@ namespace MesMonitor.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly IMesDataSimulator _simulator;
+    private readonly IThemeService _themeService;
 
     private ViewModelBase _currentViewModel;
     public ViewModelBase CurrentViewModel
@@ -30,6 +31,9 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _currentTimeString, value);
     }
 
+    public bool IsDarkMode => _themeService.CurrentTheme == AppTheme.Dark;
+    public string ThemeButtonText => IsDarkMode ? "☀️ 라이트 모드" : "🌙 다크 모드";
+
     public DashboardViewModel DashboardVM { get; }
     public EquipmentSensorViewModel EquipmentVM { get; }
     public QualitySpcViewModel QualityVM { get; }
@@ -37,20 +41,23 @@ public class MainViewModel : ViewModelBase
     public HistoryAlarmViewModel HistoryVM { get; }
 
     public IRelayCommand<string> NavigateCommand { get; }
+    public IRelayCommand ToggleThemeCommand { get; }
 
     public MainViewModel()
     {
         _simulator = new MesDataSimulator();
+        _themeService = new ThemeService();
 
-        DashboardVM = new DashboardViewModel(_simulator);
-        EquipmentVM = new EquipmentSensorViewModel(_simulator);
-        QualityVM = new QualitySpcViewModel(_simulator);
+        DashboardVM = new DashboardViewModel(_simulator, _themeService);
+        EquipmentVM = new EquipmentSensorViewModel(_simulator, _themeService);
+        QualityVM = new QualitySpcViewModel(_simulator, _themeService);
         WorkOrderVM = new WorkOrderViewModel(_simulator);
         HistoryVM = new HistoryAlarmViewModel(_simulator);
 
         _currentViewModel = DashboardVM;
 
         NavigateCommand = new RelayCommand<string>(ExecuteNavigate);
+        ToggleThemeCommand = new RelayCommand(ExecuteToggleTheme);
 
         // Clock timer
         var clockTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -61,11 +68,18 @@ public class MainViewModel : ViewModelBase
         _simulator.Start();
     }
 
+    private void ExecuteToggleTheme()
+    {
+        _themeService.ToggleTheme();
+        OnPropertyChanged(nameof(IsDarkMode));
+        OnPropertyChanged(nameof(ThemeButtonText));
+    }
+
     private void ExecuteNavigate(string? tab)
     {
         if (string.IsNullOrEmpty(tab)) return;
-
         CurrentTab = tab;
+
         CurrentViewModel = tab switch
         {
             "Dashboard" => DashboardVM,
@@ -77,4 +91,3 @@ public class MainViewModel : ViewModelBase
         };
     }
 }
-

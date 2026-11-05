@@ -23,40 +23,40 @@
             </Grid.ColumnDefinitions>
 
             <!-- Card 1: Total Plan -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="당일 생산 목표" Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
-                    <TextBlock Text="{Binding TotalPlanQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="#38BDF8"/>
-                    <TextBlock Text="전체 라인 합산 계획치" Foreground="#64748B" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="당일 생산 목표" Foreground="{DynamicResource TextMutedBrush}" FontSize="12"/>
+                    <TextBlock Text="{Binding TotalPlanQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="{DynamicResource AccentCyanBrush}"/>
+                    <TextBlock Text="전체 라인 합산 계획치" Foreground="{DynamicResource TextDimBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 2: Total Produced -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="실시간 생산 실적" Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
-                    <TextBlock Text="{Binding TotalProducedQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="{StaticResource SuccessBrush}"/>
-                    <TextBlock Text="진행률 순항 중" Foreground="#10B981" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="실시간 생산 실적" Foreground="{DynamicResource TextMutedBrush}" FontSize="12"/>
+                    <TextBlock Text="{Binding TotalProducedQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="{DynamicResource SuccessBrush}"/>
+                    <TextBlock Text="진행률 순항 중" Foreground="{DynamicResource SuccessBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 3: Defect & Quality -->
-            <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}" Margin="4,0,4,0">
+            <Border Grid.Column="2" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="4,0,4,0">
                 <StackPanel>
-                    <TextBlock Text="불량 수량 / 불량률" Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
+                    <TextBlock Text="불량 수량 / 불량률" Foreground="{DynamicResource TextMutedBrush}" FontSize="12"/>
                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                        <TextBlock Text="{Binding TotalDefectQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource DangerBrush}"/>
+                        <TextBlock Text="{Binding TotalDefectQty, StringFormat='{}{0:N0} EA'}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource DangerBrush}"/>
                     </StackPanel>
-                    <TextBlock Text="허용 한계치(2.0%) 이내 안정" Foreground="#64748B" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="허용 한계치(2.0%) 이내 안정" Foreground="{DynamicResource TextDimBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 4: Overall OEE -->
-            <Border Grid.Column="3" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="3" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="종합 설비 효율 (OEE)" Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
-                    <TextBlock Text="{Binding OverallOee, StringFormat='{}{0:F1} %'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="{StaticResource WarningBrush}"/>
-                    <TextBlock Text="목표 OEE(85.0%) 초과 달성" Foreground="#10B981" FontSize="11" Margin="0,4,0,0"/>
+                    <TextBlock Text="종합 설비 효율 (OEE)" Foreground="{DynamicResource TextMutedBrush}" FontSize="12"/>
+                    <TextBlock Text="{Binding OverallOee, StringFormat='{}{0:F1} %'}" FontSize="24" FontWeight="Bold" Margin="0,6,0,0" Foreground="{DynamicResource WarningBrush}"/>
+                    <TextBlock Text="목표 OEE(85.0%) 초과 달성" Foreground="{DynamicResource SuccessBrush}" FontSize="11" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -69,29 +69,45 @@
             </Grid.ColumnDefinitions>
 
             <!-- OEE Doughnut Chart -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="종합설비효율 (OEE) 3대 지표" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9"/>
-                    <lvc:PieChart Grid.Row="1" Series="{Binding OeeSeries}" LegendPosition="Right" Margin="0,8,0,0"/>
+                    <TextBlock Text="종합설비효율 (OEE) 3대 지표" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <lvc:PieChart Grid.Row="1" 
+                                  Series="{Binding OeeSeries}" 
+                                  LegendPosition="Right" 
+                                  LegendTextPaint="{Binding ChartLegendTextPaint}"
+                                  TooltipBackgroundPaint="{Binding ChartTooltipBgPaint}"
+                                  TooltipTextPaint="{Binding ChartTooltipTextPaint}"
+                                  Background="{DynamicResource CardBgBrush}"
+                                  Margin="0,8,0,0"/>
                 </Grid>
             </Border>
 
             <!-- Hourly Production Bar Chart -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <DockPanel>
-                        <TextBlock Text="시간대별 계획 대비 생산 추이" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9"/>
-                        <TextBlock Text="목표 vs 실적 비교" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
+                        <TextBlock Text="시간대별 계획 대비 생산 추이" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="목표 vs 실적 비교" HorizontalAlignment="Right" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
                     </DockPanel>
-                    <lvc:CartesianChart Grid.Row="1" Series="{Binding HourlyProductionSeries}" XAxes="{Binding HourlyXAxes}" YAxes="{Binding HourlyYAxes}" LegendPosition="Top" Margin="0,8,0,0"/>
+                    <lvc:CartesianChart Grid.Row="1" 
+                                        Series="{Binding HourlyProductionSeries}" 
+                                        XAxes="{Binding HourlyXAxes}" 
+                                        YAxes="{Binding HourlyYAxes}" 
+                                        LegendPosition="Top" 
+                                        LegendTextPaint="{Binding ChartLegendTextPaint}"
+                                        TooltipBackgroundPaint="{Binding ChartTooltipBgPaint}"
+                                        TooltipTextPaint="{Binding ChartTooltipTextPaint}"
+                                        Background="{DynamicResource CardBgBrush}"
+                                        Margin="0,8,0,0"/>
                 </Grid>
             </Border>
         </Grid>
@@ -104,15 +120,15 @@
             </Grid.ColumnDefinitions>
 
             <!-- Andon Line Status Cards -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,8,0">
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="0,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <DockPanel Margin="0,0,0,10">
-                        <TextBlock Text="실시간 라인 가동 현황 (Andon Monitor)" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9"/>
-                        <TextBlock Text="자동 갱신 중 (1.5s)" HorizontalAlignment="Right" Foreground="#10B981" FontSize="11"/>
+                        <TextBlock Text="실시간 라인 가동 현황 (Andon Monitor)" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="자동 갱신 중 (1.5s)" HorizontalAlignment="Right" Foreground="{DynamicResource SuccessBrush}" FontSize="11"/>
                     </DockPanel>
 
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Lines}">
@@ -123,7 +139,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#161F38" BorderBrush="#2D3B5A" BorderThickness="1" CornerRadius="6" Margin="4" Padding="12">
+                                <Border Background="{DynamicResource SubCardBgBrush}" BorderBrush="{DynamicResource SubCardBorderBrush}" BorderThickness="1" CornerRadius="6" Margin="4" Padding="12">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -134,37 +150,37 @@
 
                                         <!-- Header: Line Name & State Badge -->
                                         <DockPanel Grid.Row="0">
-                                            <TextBlock Text="{Binding LineName}" FontWeight="Bold" FontSize="13" Foreground="#FFFFFF"/>
-                                            <Border CornerRadius="4" Padding="6,2" HorizontalAlignment="Right"
+                                            <TextBlock Text="{Binding LineName}" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                            <Border HorizontalAlignment="Right" CornerRadius="4" Padding="8,2"
                                                     Background="{Binding State, Converter={StaticResource MachineStateToBrushConverter}}">
                                                 <TextBlock Text="{Binding State}" Foreground="#FFFFFF" FontWeight="Bold" FontSize="10"/>
                                             </Border>
                                         </DockPanel>
 
-                                        <!-- Product & Order -->
-                                        <TextBlock Grid.Row="1" Text="{Binding ProductName}" Foreground="#94A3B8" FontSize="11" Margin="0,6,0,6" TextTrimming="CharacterEllipsis"/>
+                                        <!-- Target Product -->
+                                        <TextBlock Grid.Row="1" Text="{Binding ProductName}" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" Margin="0,4,0,8"/>
 
-                                        <!-- Progress Section (텍스트를 프로그레스바 위쪽에 배치) -->
-                                        <StackPanel Grid.Row="2" Margin="0,4,0,8">
-                                            <!-- 상단: 진행률 및 수량 텍스트 -->
-                                            <DockPanel Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding ProgressRate, StringFormat='{}진행률: {0}%'}" FontSize="11" Foreground="#38BDF8" FontWeight="SemiBold"/>
-                                                <TextBlock HorizontalAlignment="Right" FontSize="11" Foreground="#CBD5E1">
+                                        <!-- Progress Details StackPanel -->
+                                        <StackPanel Grid.Row="2" Margin="0,2,0,4">
+                                            <!-- 상단: 진행률 텍스트 및 수량 -->
+                                            <DockPanel Margin="0,0,0,3">
+                                                <TextBlock Text="{Binding ProgressRate, StringFormat='{}진행률: {0:F1}%'}" FontSize="10" Foreground="{DynamicResource AccentCyanBrush}"/>
+                                                <TextBlock HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}">
                                                     <Run Text="{Binding ProducedQty}"/>
                                                     <Run Text="/"/>
                                                     <Run Text="{Binding TargetQty}"/>
-                                                    <Run Text="EA"/>
+                                                    <Run Text=" EA"/>
                                                 </TextBlock>
                                             </DockPanel>
 
                                             <!-- 하단: 프로그레스 바 -->
-                                            <ProgressBar Value="{Binding ProgressRate, Mode=OneWay}" Maximum="100" Height="6" Background="#24344D" Foreground="#38BDF8"/>
+                                            <ProgressBar Value="{Binding ProgressRate, Mode=OneWay}" Maximum="100" Height="6" Background="{DynamicResource ProgressBarBgBrush}" Foreground="{DynamicResource AccentCyanBrush}"/>
                                         </StackPanel>
 
                                         <!-- Sensors Snapshot -->
                                         <DockPanel Grid.Row="3" Margin="0,6,0,0">
-                                            <TextBlock Text="{Binding Temperature, StringFormat='{}온도: {0:F1}°C'}" FontSize="10" Foreground="#F59E0B"/>
-                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Rpm, StringFormat='{}RPM: {0:N0}'}" FontSize="10" Foreground="#94A3B8"/>
+                                            <TextBlock Text="{Binding Temperature, StringFormat='{}온도: {0:F1}°C'}" FontSize="10" Foreground="{DynamicResource WarningBrush}"/>
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Rpm, StringFormat='{}RPM: {0:N0}'}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}"/>
                                         </DockPanel>
                                     </Grid>
                                 </Border>
@@ -175,35 +191,35 @@
             </Border>
 
             <!-- Recent Alarms Feed -->
-            <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}" Margin="8,0,0,0">
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}" Background="{DynamicResource CardBgBrush}" Margin="8,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <DockPanel Margin="0,0,0,10">
-                        <TextBlock Text="실시간 알람 &amp; 이상 감지" FontWeight="Bold" FontSize="14" Foreground="#F1F5F9"/>
-                        <TextBlock Text="{Binding ActiveAlarmCount, StringFormat='{}미확인: {0}건'}" HorizontalAlignment="Right" Foreground="#EF4444" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="실시간 알람 &amp; 이상 감지" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="{Binding ActiveAlarmCount, StringFormat='{}미확인: {0}건'}" HorizontalAlignment="Right" Foreground="{DynamicResource DangerBrush}" FontSize="11" FontWeight="Bold"/>
                     </DockPanel>
 
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding RecentAlarms}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#161F38" BorderBrush="#2D3B5A" BorderThickness="1" CornerRadius="4" Margin="0,0,0,6" Padding="8">
+                                <Border Background="{DynamicResource SubCardBgBrush}" BorderBrush="{DynamicResource SubCardBorderBrush}" BorderThickness="1" CornerRadius="4" Margin="0,0,0,6" Padding="8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="6"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <!-- Severity Bar -->
+
                                         <Border Grid.Column="0" Background="{Binding Severity, Converter={StaticResource AlarmSeverityToBrushConverter}}" CornerRadius="2" Margin="0,0,6,0"/>
 
                                         <StackPanel Grid.Column="1" Margin="6,0,0,0">
                                             <DockPanel>
-                                                <TextBlock Text="{Binding EquipmentName}" FontWeight="Bold" FontSize="11" Foreground="#FFFFFF"/>
-                                                <TextBlock Text="{Binding Timestamp, StringFormat='{}HH:mm:ss'}" HorizontalAlignment="Right" FontSize="10" Foreground="#64748B"/>
+                                                <TextBlock Text="{Binding EquipmentName}" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Timestamp, StringFormat='{}HH:mm:ss'}" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextDimBrush}"/>
                                             </DockPanel>
-                                            <TextBlock Text="{Binding Message}" FontSize="11" Foreground="#CBD5E1" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                            <TextBlock Text="{Binding Message}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" Margin="0,2,0,0"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -215,4 +231,3 @@
         </Grid>
     </Grid>
 </UserControl>
-

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using MesMonitor.Helpers;
 using MesMonitor.Models;
 using MesMonitor.Services;
 using SkiaSharp;
@@ -13,6 +14,7 @@ namespace MesMonitor.ViewModels;
 public class EquipmentSensorViewModel : ViewModelBase
 {
     private readonly IMesDataSimulator _simulator;
+    private readonly IThemeService _themeService;
 
     public ObservableCollection<LineStatusItem> EquipmentList => _simulator.Lines;
 
@@ -71,15 +73,53 @@ public class EquipmentSensorViewModel : ViewModelBase
     public ObservableCollection<double> VibrationValues { get; } = new();
 
     public ISeries[] SensorSeries { get; private set; }
-    public Axis[] XAxes { get; private set; }
-    public Axis[] YAxes { get; private set; }
+
+    private Axis[] _xAxes = Array.Empty<Axis>();
+    public Axis[] XAxes
+    {
+        get => _xAxes;
+        private set => SetProperty(ref _xAxes, value);
+    }
+
+    private Axis[] _yAxes = Array.Empty<Axis>();
+    public Axis[] YAxes
+    {
+        get => _yAxes;
+        private set => SetProperty(ref _yAxes, value);
+    }
+
+    private SolidColorPaint _chartLegendTextPaint;
+    public SolidColorPaint ChartLegendTextPaint
+    {
+        get => _chartLegendTextPaint;
+        private set => SetProperty(ref _chartLegendTextPaint, value);
+    }
+
+    private SolidColorPaint _chartTooltipBgPaint;
+    public SolidColorPaint ChartTooltipBgPaint
+    {
+        get => _chartTooltipBgPaint;
+        private set => SetProperty(ref _chartTooltipBgPaint, value);
+    }
+
+    private SolidColorPaint _chartTooltipTextPaint;
+    public SolidColorPaint ChartTooltipTextPaint
+    {
+        get => _chartTooltipTextPaint;
+        private set => SetProperty(ref _chartTooltipTextPaint, value);
+    }
 
     public IRelayCommand<string> ChangeStateCommand { get; }
 
-    public EquipmentSensorViewModel(IMesDataSimulator simulator)
+    public EquipmentSensorViewModel(IMesDataSimulator simulator, IThemeService themeService)
     {
         Title = "설비 센서 모니터링 & 상태 분석 (IoT Sensor & Diagnostics)";
         _simulator = simulator;
+        _themeService = themeService;
+
+        _chartLegendTextPaint = ChartThemeHelper.GetLegendTextPaint(_themeService.CurrentTheme);
+        _chartTooltipBgPaint = ChartThemeHelper.GetTooltipBgPaint(_themeService.CurrentTheme);
+        _chartTooltipTextPaint = ChartThemeHelper.GetTooltipTextPaint(_themeService.CurrentTheme);
 
         SensorSeries = new ISeries[]
         {
@@ -115,13 +155,28 @@ public class EquipmentSensorViewModel : ViewModelBase
             }
         };
 
+        UpdateChartAxes(_themeService.CurrentTheme);
+        _themeService.ThemeChanged += OnThemeChanged;
+
+        ChangeStateCommand = new RelayCommand<string>(ExecuteChangeState);
+
+        SelectedEquipment = EquipmentList.FirstOrDefault();
+        _simulator.SensorStreamUpdated += OnSensorStreamUpdated;
+    }
+
+    private void UpdateChartAxes(AppTheme theme)
+    {
+        ChartLegendTextPaint = ChartThemeHelper.GetLegendTextPaint(theme);
+        ChartTooltipBgPaint = ChartThemeHelper.GetTooltipBgPaint(theme);
+        ChartTooltipTextPaint = ChartThemeHelper.GetTooltipTextPaint(theme);
+
         XAxes = new Axis[]
         {
             new Axis
             {
                 Name = "시계열 샘플 (실시간 스트림)",
-                NamePaint = new SolidColorPaint(new SKColor(148, 163, 184)),
-                LabelsPaint = new SolidColorPaint(new SKColor(148, 163, 184)),
+                NamePaint = ChartThemeHelper.GetTitlePaint(theme),
+                LabelsPaint = ChartThemeHelper.GetLabelsPaint(theme),
                 TextSize = 11
             }
         };
@@ -135,7 +190,7 @@ public class EquipmentSensorViewModel : ViewModelBase
                 LabelsPaint = new SolidColorPaint(new SKColor(239, 68, 68)),
                 MinLimit = 20,
                 MaxLimit = 110,
-                SeparatorsPaint = new SolidColorPaint(new SKColor(51, 65, 85, 80))
+                SeparatorsPaint = ChartThemeHelper.GetSeparatorsPaint(theme)
             },
             new Axis
             {
@@ -148,11 +203,11 @@ public class EquipmentSensorViewModel : ViewModelBase
                 ShowSeparatorLines = false
             }
         };
+    }
 
-        ChangeStateCommand = new RelayCommand<string>(ExecuteChangeState);
-
-        SelectedEquipment = EquipmentList.FirstOrDefault();
-        _simulator.SensorStreamUpdated += OnSensorStreamUpdated;
+    private void OnThemeChanged(AppTheme theme)
+    {
+        UpdateChartAxes(theme);
     }
 
     private void ExecuteChangeState(string? stateStr)
@@ -209,4 +264,3 @@ public class EquipmentSensorViewModel : ViewModelBase
         }
     }
 }
-

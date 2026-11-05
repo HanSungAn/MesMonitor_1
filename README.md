@@ -8,11 +8,26 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 
 | 구분 | 기술 / 라이브러리 | 설명 |
 | :--- | :--- | :--- |
-| **Framework** | .NET 8.0 (WPF) | 고성능 Windows 데스크톱 UI 애플리케이션 |
+| **Framework** | **.NET 8.0 (WPF)** | 고성능 Windows 데스크톱 UI 애플리케이션 |
 | **Chart Library** | **LiveChartsCore.SkiaSharpView.WPF (v2.0.5)** | 실시간 GPU 가속 데이터 시각화 차트 엔진 |
 | **Architecture** | **MVVM Pattern** (`CommunityToolkit.Mvvm`) | 느슨한 결합의 유지보수 용이한 아키텍처 |
-| **Theme / Design** | **Dark Industrial Operations Theme** | 생산 관제 센터 실무 표준 다크 모드 UI |
+| **Theme System** | **동적 테마 엔진 (다크 모드 / 라이트 모드)** | 런타임 실시간 테마 전환 및 차트 페인트 동기화 |
 | **Data Engine** | **MesDataSimulator (Local Engine)** | 1.5초 주기로 설비 센서, 생산 수량, 알람을 갱신하는 시뮬레이터 |
+
+---
+
+## 🎨 실시간 다크 / 라이트 테마 지원 (Dynamic Themes)
+
+헤더 우측의 테마 전환 버튼(`☀️ 라이트 모드` / `🌙 다크 모드`)을 통해 재시작 없이 즉시 테마를 변경할 수 있습니다.
+
+* **다크 모드 (Dark Industrial Navy):**
+  * 배경 `#0B132B`, 카드 `#1C2541`, 보조 카드 `#161F38`
+  * 관제 센터 특화 고대비 텍스트 및 그리드
+* **라이트 모드 (Modern Slate Light):**
+  * 배경 `#F1F5F9`, 카드 `#FFFFFF`, 보조 카드 `#F8FAFC`
+  * 문서 및 일상 업무에 적합한 깔끔하고 선명한 디자인
+* **LiveCharts2 테마 자동 동기화 (`ChartThemeHelper`):**
+  * 차트 캔버스 배경, X/Y축 텍스트, 제목, 배경 눈금선(Separators), 범례(Legend) 텍스트 색상이 테마에 맞춰 SkiaSharp `SolidColorPaint`로 실시간 자동 갱신됩니다.
 
 ---
 
@@ -29,10 +44,10 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 
 ### 1. 실시간 공정 모니터링 대시보드 (`DashboardView`)
 * **핵심 KPI 요약:** 당일 생산 목표, 실시간 생산 실적, 불량 수량, 종합설비효율(OEE).
-* **OEE 도넛 차트 (LiveCharts2 `PieChart`):** 시간 가동률(Availability), 성능 가동률(Performance), 양품률(Quality) 3대 지표 분해.
-* **시간대별 생산 추이 (LiveCharts2 `CartesianChart`):** 시간대별 목표 vs 실적 비교 막대 차트.
-* **안돈(Andon) 라인 현황 카드:** 라인별 가동/비가동/경보 상태 배지, 실시간 수량 및 프로그레스 바.
-* **실시간 알람 티커:** 미확인 알람 카운트 및 이벤트 피드.
+* **OEE 도넛 차트 (LiveCharts2 `PieChart`):** 시간 가동률(Availability), 성능 가동률(Performance), 양품률(Quality) 3대 지표 분해 및 동적 범례 연동.
+* **시간대별 생산 추이 (LiveCharts2 `CartesianChart`):** 시간대별 목표 vs 실적 비교 막대 차트 (다크/라이트 목표치 대비색 자동 적용).
+* **안돈(Andon) 라인 현황 카드:** 라인별 가동/비가동/경보 상태 배지, 수량 분리형 프로그레스 바 및 센서 스냅샷.
+* **실시간 알람 피드:** 미확인 알람 카운트 및 이벤트 피드.
 
 ### 2. 설비 센서 모니터링 & 상태 분석 (`EquipmentSensorView`)
 * **설비 선택 셀렉터:** 대상 설비(SMT 1호기, CNC 2호기, 사출 3호기, 조립 4호기) 전환.
@@ -72,7 +87,9 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 ```
 MesMonitor/
  ├── Converters/
- │    └── StatusToBrushConverter.cs     # 상태값(가동,경보,심각도 등) 색상 변환기
+ │    └── StatusToBrushConverter.cs     # 상태값(가동, 경보, 심각도 등) 색상 변환기
+ ├── Helpers/
+ │    └── ChartThemeHelper.cs           # LiveCharts2 다크/라이트 페인트 동기화 헬퍼
  ├── Models/
  │    ├── LineStatusItem.cs             # 설비 라인 모델
  │    ├── SensorDataPoint.cs            # 실시간 센서 시계열 모델
@@ -82,10 +99,15 @@ MesMonitor/
  │    └── AlarmItem.cs                  # 알람 로그 모델
  ├── Services/
  │    ├── IMesDataSimulator.cs          # 시뮬레이터 인터페이스
- │    └── MesDataSimulator.cs           # 백그라운드 실시간 데이터 생성 엔진
+ │    ├── MesDataSimulator.cs           # 백그라운드 실시간 데이터 생성 엔진
+ │    ├── IThemeService.cs              # 동적 테마 매니저 인터페이스
+ │    └── ThemeService.cs               # 테마 딕셔너리 런타임 교체 엔진
+ ├── Themes/
+ │    ├── DarkTheme.xaml                # 다크 모드 컬러 팔레트 리소스
+ │    └── LightTheme.xaml               # 라이트 모드 컬러 팔레트 리소스
  ├── ViewModels/
  │    ├── ViewModelBase.cs              # ObservableObject 기반 공통 베이스
- │    ├── MainViewModel.cs              # 내비게이션, 시계, 글로벌 상태 제어
+ │    ├── MainViewModel.cs              # 내비게이션, 테마 토글, 글로벌 상태 제어
  │    ├── DashboardViewModel.cs         # 메인 대시보드 뷰모델
  │    ├── EquipmentSensorViewModel.cs   # 센서 모니터링 뷰모델
  │    ├── QualitySpcViewModel.cs        # 파레토 및 SPC 뷰모델
@@ -107,6 +129,6 @@ MesMonitor/
 ## 🚀 실행 방법 (How to Run)
 
 ### Visual Studio에서 실행:
-1. `MesMonitor.sln` 또는 `MesMonitor.slnx` 파일을 Visual Studio 2022 이상에서 오픈합니다.
+1. `MesMonitor(C#)\MesMonitor.sln` 솔루션 파일을 Visual Studio 2022 이상에서 엽니다.
 2. 상단 시작 버튼 (`F5` 또는 `Ctrl+F5`)을 누르면 즉시 빌드 및 실행됩니다.
 

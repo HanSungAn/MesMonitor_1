@@ -16,7 +16,7 @@
         Height="850" Width="1380"
         MinHeight="720" MinWidth="1100"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BgDarkBrush}"
+        Background="{DynamicResource BgWindowBrush}"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
         UseLayoutRounding="True"
@@ -32,7 +32,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left Sidebar Navigation -->
-        <Border Grid.Column="0" Background="#111B33" BorderBrush="#2D3B5A" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/> <!-- App Brand / Logo -->
@@ -41,15 +41,15 @@
                 </Grid.RowDefinitions>
 
                 <!-- Brand / Logo -->
-                <Border Grid.Row="0" Padding="20,24,20,20" BorderBrush="#2D3B5A" BorderThickness="0,0,0,1">
+                <Border Grid.Row="0" Padding="20,24,20,20" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Border Background="#0284C7" CornerRadius="6" Width="32" Height="32" Margin="0,0,10,0">
                                 <TextBlock Text="M" FontWeight="Bold" FontSize="18" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="MES CORE" FontWeight="Bold" FontSize="16" Foreground="#FFFFFF"/>
-                                <TextBlock Text="Smart Operations v2.4" FontSize="10" Foreground="#38BDF8"/>
+                                <TextBlock Text="MES CORE" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Smart Operations v2.4" FontSize="10" Foreground="#0284C7"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -58,7 +58,7 @@
                 <!-- Nav Menu Buttons -->
                 <ScrollViewer Grid.Row="1" Margin="10,16,10,16" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="MAIN MENU" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="8,0,0,8"/>
+                        <TextBlock Text="MAIN MENU" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold" Margin="8,0,0,8"/>
 
                         <!-- 1. Dashboard -->
                         <Button Style="{StaticResource NavButtonStyle}" 
@@ -96,7 +96,7 @@
                             </StackPanel>
                         </Button>
 
-                        <TextBlock Text="SYSTEM &amp; CONFIG" Foreground="#64748B" FontSize="10" FontWeight="Bold" Margin="8,20,0,8"/>
+                        <TextBlock Text="SYSTEM &amp; CONFIG" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold" Margin="8,20,0,8"/>
 
                         <!-- 5. History & Settings -->
                         <Button Style="{StaticResource NavButtonStyle}" 
@@ -110,14 +110,14 @@
                 </ScrollViewer>
 
                 <!-- Footer Info -->
-                <Border Grid.Row="2" Padding="16,16" BorderBrush="#2D3B5A" BorderThickness="0,1,0,0" Background="#0C1427">
+                <Border Grid.Row="2" Padding="16,16" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Background="{DynamicResource FooterBgBrush}">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="운영자" Foreground="#64748B" FontSize="11"/>
-                            <TextBlock Text="Administrator" HorizontalAlignment="Right" Foreground="#CBD5E1" FontSize="11" FontWeight="SemiBold"/>
+                            <TextBlock Text="운영자" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                            <TextBlock Text="Administrator" HorizontalAlignment="Right" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="SemiBold"/>
                         </DockPanel>
                         <DockPanel Margin="0,4,0,0">
-                            <TextBlock Text="네트워크" Foreground="#64748B" FontSize="11"/>
+                            <TextBlock Text="네트워크" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Ellipse Width="8" Height="8" Fill="#10B981" Margin="0,0,4,0"/>
                                 <TextBlock Text="ONLINE" Foreground="#10B981" FontSize="10" FontWeight="Bold"/>
@@ -136,24 +136,44 @@
             </Grid.RowDefinitions>
 
             <!-- Top Header Bar -->
-            <Border Grid.Row="0" Background="#111B33" BorderBrush="#2D3B5A" BorderThickness="0,0,0,1" Padding="20,0">
+            <Border Grid.Row="0" Background="{DynamicResource HeaderBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="20,0">
                 <DockPanel VerticalAlignment="Center">
                     <!-- Title of current view -->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding CurrentViewModel.Title}" FontWeight="Bold" FontSize="16" Foreground="#FFFFFF" VerticalAlignment="Center"/>
-                        <Border Background="#1E293B" CornerRadius="4" Padding="8,3" Margin="14,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="제1공장 스마트제조 라인" Foreground="#94A3B8" FontSize="11"/>
+                        <TextBlock Text="{Binding CurrentViewModel.Title}" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Border Background="{DynamicResource BadgeNeutralBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="제1공장 스마트제조 라인" Foreground="{DynamicResource BadgeNeutralTextBrush}" FontSize="11"/>
                         </Border>
                     </StackPanel>
 
-                    <!-- Realtime Clock & Indicators -->
+                    <!-- Right Controls: Theme Switch, Clock, Indicator -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Border Background="#161F38" BorderBrush="#2D3B5A" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="0,0,12,0">
+                        <!-- Theme Toggle Button -->
+                        <Button Command="{Binding ToggleThemeCommand}" 
+                                Content="{Binding ThemeButtonText}" 
+                                Height="32" Padding="12,0" Margin="0,0,12,0" 
+                                Background="{DynamicResource SubCardBgBrush}" 
+                                Foreground="{DynamicResource TextPrimaryBrush}" 
+                                BorderBrush="{DynamicResource BorderBrush}" 
+                                BorderThickness="1" 
+                                FontSize="12" FontWeight="SemiBold" 
+                                Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <!-- Realtime Clock -->
+                        <Border Background="{DynamicResource SubCardBgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="0,0,12,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🕒" Margin="0,0,6,0" FontSize="12"/>
-                                <TextBlock Text="{Binding CurrentTimeString}" FontWeight="SemiBold" Foreground="#38BDF8" FontSize="12"/>
+                                <TextBlock Text="{Binding CurrentTimeString}" FontWeight="SemiBold" Foreground="{DynamicResource AccentCyanBrush}" FontSize="12"/>
                             </StackPanel>
                         </Border>
+
+                        <!-- System Ready Badge -->
                         <Border Background="#065F46" CornerRadius="4" Padding="8,4">
                             <TextBlock Text="SYSTEM READY" Foreground="#34D399" FontSize="10" FontWeight="Bold"/>
                         </Border>
@@ -166,4 +186,3 @@
         </Grid>
     </Grid>
 </Window>
-
