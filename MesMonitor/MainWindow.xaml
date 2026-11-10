@@ -1,4 +1,4 @@
-﻿<!-- 
+<!-- 
     [렌더링 및 디스플레이 최적화 옵션]
     - TextOptions.TextFormattingMode="Display" : 폰트 크기/자간의 픽셀 정렬 가독성 향상
     - TextOptions.TextRenderingMode="ClearType" : LCD 모니터 서브픽셀 클리어타입 렌더링
@@ -12,7 +12,7 @@
         xmlns:local="clr-namespace:MesMonitor"
         xmlns:vm="clr-namespace:MesMonitor.ViewModels"
         mc:Ignorable="d"
-        Title="MES Solution - Smart Factory Operations Center (Portfolio)" 
+        Title="MES Solution - Smart Factory Operations Center" 
         Height="850" Width="1380"
         MinHeight="720" MinWidth="1100"
         WindowStartupLocation="CenterScreen"
