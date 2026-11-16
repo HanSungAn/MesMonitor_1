@@ -2,6 +2,10 @@
 
 C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반으로 개발된 스마트 제조 실행 시스템(MES: Manufacturing Execution System) 실시간 관제 솔루션 포트폴리오입니다.
 
+<p align="center">
+  <img src="./docs/images/MesMonitor_Demo.gif" alt="MesMonitor Live Demo Preview" width="900" />
+</p>
+
 ---
 
 ## 🛠️ 기술 스택 (Tech Stack)
@@ -43,6 +47,7 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 ```
 
 ### 1. 실시간 공정 모니터링 대시보드 (`DashboardView`)
+![Dashboard View](./docs/images/dashboard.png)
 * **핵심 KPI 요약:** 당일 생산 목표, 실시간 생산 실적, 불량 수량, 종합설비효율(OEE).
 * **OEE 도넛 차트 (LiveCharts2 `PieChart`):** 시간 가동률(Availability), 성능 가동률(Performance), 양품률(Quality) 3대 지표 분해 및 동적 범례 연동.
 * **시간대별 생산 추이 (LiveCharts2 `CartesianChart`):** 시간대별 목표 vs 실적 비교 막대 차트 (다크/라이트 목표치 대비색 자동 적용).
@@ -50,6 +55,7 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 * **실시간 알람 피드:** 미확인 알람 카운트 및 이벤트 피드.
 
 ### 2. 설비 센서 모니터링 & 상태 분석 (`EquipmentSensorView`)
+![Equipment Sensor View](./docs/images/equipment.png)
 * **설비 선택 셀렉터:** 대상 설비(SMT 1호기, CNC 2호기, 사출 3호기, 조립 4호기) 전환.
 * **실시간 멀티 센서 트렌드 차트 (LiveCharts2 Multi-Y Axis `CartesianChart`):**
   * 온도(°C) - 좌측 Y축
@@ -59,6 +65,7 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 * **예지보전 임계치 가이드:** 온도/진동/압력의 안전/경고/위험 기준선 표기.
 
 ### 3. 품질 및 SPC 공정 분석 화면 (`QualitySpcView`)
+![Quality & SPC View](./docs/images/quality.png)
 * **불량 파레토 차트 (Pareto Chart - 80/20 법칙):**
   * `ColumnSeries`: 불량 유형별 발생 건수 (내림차순).
   * `LineSeries`: 누적 백분율 (오른쪽 Y축, 0~100%).
@@ -68,6 +75,7 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 * **품질 지표 카드:** 총 검사 수량, 불량률(%), PPM, 공정능력지수(Cpk: 1.33, Cp: 1.48).
 
 ### 4. 생산 계획 및 실적 관리 (`WorkOrderView`)
+![Work Order View](./docs/images/workorder.png)
 * **상태별 필터링:** 전체 / 진행중 / 대기 / 완료 조건 검색.
 * **작업지시 그리드 (DataGrid):** 지시번호, 라인, 품목코드, 품목명, 상태 태그, 계획/실적 수량, 프로그레스 바.
 * **신규 작업지시 발행 폼:** 품목 및 수량 입력 후 원클릭 지시 생성 및 실시간 목록 반영.
@@ -75,6 +83,7 @@ C# (.NET 8 WPF)과 **LiveCharts2 (v2.0)**, **CommunityToolkit.Mvvm**을 기반�
 * **오더 상태 점유 도넛 차트:** 진행/대기/완료 비율 시각화.
 
 ### 5. 알람 이력 및 기준정보 설정 (`HistoryAlarmView`)
+![Alarm Logs & Config View](./docs/images/history.png)
 * **이상 심각도(Severity) 필터:** Critical / Warning / Info 별 검색.
 * **알람 조치 기능:** 미확인 알람에 대한 [확인] 처리 및 상태 변경.
 * **CSV 내보내기 기능:** 바탕화면으로 알람 이력 즉시 CSV 파일 추출.

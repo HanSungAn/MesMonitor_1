@@ -4,8 +4,7 @@
              xmlns:local="clr-namespace:MesMonitor"
              xmlns:vm="clr-namespace:MesMonitor.ViewModels"
              xmlns:views="clr-namespace:MesMonitor.Views"
-             xmlns:conv="clr-namespace:MesMonitor.Converters"
-             StartupUri="MainWindow.xaml">
+             xmlns:conv="clr-namespace:MesMonitor.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
